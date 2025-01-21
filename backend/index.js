@@ -6,13 +6,23 @@ const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const path = require('path')
 const cors = require('cors');
-const cloudinaryController = require('./cloudinaryController.js');
+const mongoSanitize=require('express-mongo-sanitize')
 const cloudinary = require("cloudinary").v2;
 const { Readable } = require("stream");
+const methodOverride = require('method-override'); 
+const bcrypt = require('bcrypt'); 
 require("dotenv").config();
+const dburl=process.env.DB_URL
+const saltRounds = parseInt(process.env.SALT,10)
   
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true })); 
+app.use(methodOverride('_method')); 
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize({
+  replaceWith: '_'
+}))
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,8 +30,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-  
-mongoose.connect("mongodb+srv://pushkalmishra214:WdlY4kuDN6XnftzP@reactp.oo0cu.mongodb.net/?retryWrites=true&w=majority&appName=Reactp")
+
+mongoose.connect(dburl)
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -32,40 +42,12 @@ app.get("/",(req,res)=>{
     res.send("Express App is running")
 })
 
-// const storage=multer.diskStorage({
-//     destination:'./upload/images',
-//     filename:(req,file,cb)=>{
-//         cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-//     }
-// })
 
-// const storage = new CloudinaryStorage({
-//   cloudinary: cloudinary,
-//   params: {
-//       folder: "images", // Cloudinary folder name
-//       allowed_formats: ["jpg", "png", "jpeg"], // Allowed file formats
-//   },
-// });
-// const upload=multer({storage:storage});
 
 const upload = multer();
 
 app.use('/images',express.static('upload/images'))
-//Mine
-// app.post("/upload",upload.single('product'),(req,res)=>{
-//     res.json({
-//         success:1,
-//         image_url:`http://localhost:${port}/images/${req.file.filename}`,
-//     })
-// })
 
-// co-pilot
-// app.post('/upload', upload.single('product'), cloudinaryController.uploadImage, (req, res) => { 
-//   res.json({ 
-//     success: 1, 
-//     image_url: req.picturePath, 
-//   }); 
-// });
 app.post("/upload", upload.single("product"), (req, res) => {
   try {
     const stream = cloudinary.uploader.upload_stream(
@@ -190,10 +172,11 @@ app.post("/signup", async (req, res) => {
   for (let i = 0; i < 300; i++) {
     cart[i] = 0;
   }
+  const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
   const user = new User({
     name: req.body.username,
     email: req.body.email,
-    password: req.body.password,
+    password: hashedPassword,
     cartData: cart,
   });
   await user.save();
@@ -213,7 +196,7 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) {
-    const passMatch = req.body.password === user.password;
+    const passMatch = await bcrypt.compare(req.body.password, user.password);;
     if (passMatch) {
       const data = {
         user: {
