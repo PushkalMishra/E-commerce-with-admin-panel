@@ -6,7 +6,7 @@ const Popular = () => {
 
   const [popularProducts,setPopularProducts]=useState([]);
   useEffect(()=>{
-    fetch("http://localhost:4000/popularproducts").then((response)=>response.json()).then((data)=>setPopularProducts(data))
+    fetch("https://e-commerce-with-admin-panel.onrender.com/popularproducts").then((response)=>response.json()).then((data)=>setPopularProducts(data))
   },[])
   return (
     <section className='bg-primary'>

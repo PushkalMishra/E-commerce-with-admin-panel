@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 const ListProduct = () => {
     const [allproducts,setAllproducts]=useState([]);
     const fecthInfo=async()=>{
-        await fetch('http://localhost:4000/allproducts').then((res)=>res.json()).then((data)=>{setAllproducts(data)});
+        await fetch('https://e-commerce-with-admin-panel.onrender.com/allproducts').then((res)=>res.json()).then((data)=>{setAllproducts(data)});
     }
     useEffect(()=>{
         fecthInfo();
     },[])
 
     const remove_product=async (id)=>{
-        await fetch('http://localhost:4000/removeproduct',{
+        await fetch('https://e-commerce-with-admin-panel.onrender.com/removeproduct',{
             method:'POST',
             headers:{
                 Accept:'application/json',

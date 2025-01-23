@@ -2,6 +2,7 @@ import React from 'react'
 import upload_area from '../assets/upload_area.svg'
 import {MdAdd} from "react-icons/md"
 import { useState } from 'react'
+
 const AddProduct = () => {
 
     const [image,setImage]=useState(false);
@@ -12,6 +13,7 @@ const AddProduct = () => {
         new_price:"",
         old_price:""
     })
+
     const imageHandler=(e)=>{
         setImage(e.target.files[0])
     }
@@ -25,7 +27,7 @@ const AddProduct = () => {
 
         let formData = new FormData();
         formData.append('product',image);
-        await fetch('http://localhost:4000/upload',{
+        await fetch('https://e-commerce-with-admin-panel.onrender.com/upload',{
             method:'POST',
             headers:{
                 Accept:'application/json',
@@ -36,7 +38,7 @@ const AddProduct = () => {
         if(responseData.success){
             product.image=responseData.image_url;
             console.log(product)
-            await fetch('http://localhost:4000/addproduct',{
+            await fetch('https://e-commerce-with-admin-panel.onrender.com/addproduct',{
                 method:'POST',
                 headers:{
                     Accept:'application/json',

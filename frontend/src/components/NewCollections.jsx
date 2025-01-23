@@ -4,7 +4,7 @@ import { useState } from 'react';
 const NewCollections = () => {
   const [new_collection,setNew_collection]=useState([]);
   useEffect(()=>{
-    fetch('http://localhost:4000/newcollections').then((response)=>response.json()).then((data)=>setNew_collection(data));
+    fetch('https://e-commerce-with-admin-panel.onrender.com/newcollections').then((response)=>response.json()).then((data)=>setNew_collection(data));
   },[])
   return (
     <section className='bg-primary'>
