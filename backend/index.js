@@ -14,12 +14,14 @@ const bcrypt = require('bcrypt');
 require("dotenv").config();
 const dburl=process.env.DB_URL
 const saltRounds = parseInt(process.env.SALT,10)
-  
+
+
+
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true })); 
 app.use(methodOverride('_method')); 
-// app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(mongoSanitize({
   replaceWith: '_'
 }))
@@ -38,9 +40,9 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-app.get("/",(req,res)=>{
-    res.send("Express App is running")
-})
+// app.get("/",(req,res)=>{
+//     res.send("Express App is running")
+// })
 
 
 
@@ -280,6 +282,15 @@ app.post('/getcart', fetchUser, async(req, res) => {
   console.log('get cart data');
   let userData = await User.findOne({_id:req.user.id});
   res.json(userData.cartData)
+})
+app.use(express.static(path.join(__dirname,"../frontend/dist")))
+
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname,"../frontend/dist/index.html"),(err)=>{
+  if (err){
+    res.status(500).send(err);
+  }
+});
 })
 
 app.listen(port,(error)=>{

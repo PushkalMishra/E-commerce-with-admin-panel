@@ -1,4 +1,4 @@
-import { BrowserRouter,Route,Routes} from "react-router-dom"
+import { BrowserRouter,Route,Routes,Navigate} from "react-router-dom"
 import Header from "./components/header"
 import Home from "./pages/Home"
 import Category from "./pages/Category"
@@ -6,10 +6,18 @@ import Cart from "./pages/Cart"
 import Login from "./pages/Login"
 import Product from "./pages/Product"
 import Footer from "./components/Footer"
+import Admin from "./pages/Admin";
+import AddProduct from "./components/AddProduct"
+import ListProduct from "./components/ListProduct"
 import bannermens from "./assets/bannermens.png"
 import bannerwomens from "./assets/bannerwomens.png"
 import bannerkids from "./assets/bannerkids.png"
+import { useState } from "react"
+
 export default function App() {
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const requireAdminAuth = (element) =>
+    isAdminAuthenticated ? element : <Navigate to="/login" />;
   return (
     <main className="bg-primary text text-tertiary">
       <BrowserRouter>
@@ -23,7 +31,11 @@ export default function App() {
         <Route path=":productId" element={<Product/>}/>
         </Route>
         <Route path="/cart-page" element={<Cart/>}/>
-        <Route path="/login" element={<Login/>}/>
+        <Route path="/login" element={<Login setIsAdminAuthenticated={setIsAdminAuthenticated}/>}/>
+        <Route path="admin" element={requireAdminAuth(<Admin/>)}>
+          <Route path="addproduct" element={<AddProduct/>}/>
+          <Route path="listproduct" element={<ListProduct/>}/>
+        </Route>
       </Routes>
       <Footer/>
       </BrowserRouter>

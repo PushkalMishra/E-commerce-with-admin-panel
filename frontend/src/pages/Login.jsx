@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
-const Login = () => {
+import { useNavigate } from 'react-router-dom';
+const Login = ({ setIsAdminAuthenticated }) => {
+  const navigate = useNavigate();
   const [state,setState]=useState("Sign Up")
   const [formData,setFormData]=useState({
     username:"",
@@ -26,7 +28,12 @@ const Login = () => {
   
       if (responseData.success) {
         localStorage.setItem('auth-token', responseData.token);
+        if(formData.email === "shivendra12@gmail.com" && formData.password === "shivendra12"){
+          setIsAdminAuthenticated(true)
+          navigate('/admin');
+        } else{
         window.location.replace('/');
+        }
       } else {
         alert(responseData.errors);
       }

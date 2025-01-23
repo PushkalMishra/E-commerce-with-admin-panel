@@ -1,0 +1,7 @@
+# Set the default behavior to automatically normalize line endings.
+* text=auto
+
+# Specific configuration files
+frontend/.gitignore text eol=lf
+frontend/src/App.jsx text eol=lf
+frontend/src/assets/upload_area.svg binary
