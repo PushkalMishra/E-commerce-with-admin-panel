@@ -1,5 +1,5 @@
 import { BrowserRouter,Route,Routes,Navigate} from "react-router-dom"
-import Header from "./components/header"
+import Top from "./components/Top"
 import Home from "./pages/Home"
 import Category from "./pages/Category"
 import Cart from "./pages/Cart"
@@ -21,7 +21,7 @@ export default function App() {
   return (
     <main className="bg-primary text text-tertiary">
       <BrowserRouter>
-      <Header/>
+      <Top/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/mens" element={<Category category="men" banner={bannermens}/>}/>

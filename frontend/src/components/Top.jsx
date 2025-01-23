@@ -9,10 +9,11 @@ import Navbar from './Navbar';
 import {MdClose,MdMenu} from "react-icons/md";
 import {FaOpencart} from "react-icons/fa";
 import { ShopContext } from '../Context/ShopContext';
-const header = () => {
-  const [menuOpened,setMenuOpened]=useState(false)
-  const toggleMenu=()=>setMenuOpened(!menuOpened);
-  const {getTotalCartItems}=useContext(ShopContext);  
+
+const Top = () => {
+    const [menuOpened,setMenuOpened]=useState(false)
+    const toggleMenu=()=>setMenuOpened(!menuOpened);
+    const {getTotalCartItems}=useContext(ShopContext);  
   return (
     <header className="fixed top-0 left-0 m-auto max_padd_container w-full bg-white ring-1 ring-slate-900/5 z-10">
         <div className='px-4 flex items-center justify-between py-3 max-x5:px-2'>
@@ -34,4 +35,4 @@ const header = () => {
   )
 }
 
-export default header
+export default Top
