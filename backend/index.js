@@ -10,8 +10,10 @@ const mongoSanitize=require('express-mongo-sanitize')
 const cloudinary = require("cloudinary").v2;
 const { Readable } = require("stream");
 const methodOverride = require('method-override'); 
-const bcrypt = require('bcrypt'); 
-require("dotenv").config();
+const bcrypt = require('bcrypt');
+if(process.env.NODE_ENV!='production'){
+  require("dotenv").config();
+}
 const dburl=process.env.DB_URL
 const saltRounds = parseInt(process.env.SALT,10)
 
