@@ -9,7 +9,7 @@ import Navbar from './Navbar';
 import {MdClose,MdMenu} from "react-icons/md";
 import {FaOpencart} from "react-icons/fa";
 import { ShopContext } from '../Context/ShopContext';
-const Header = () => {
+const header = () => {
   const [menuOpened,setMenuOpened]=useState(false)
   const toggleMenu=()=>setMenuOpened(!menuOpened);
   const {getTotalCartItems}=useContext(ShopContext);  
@@ -34,4 +34,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default header
